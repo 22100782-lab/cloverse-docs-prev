@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloverse | UP & DOWN Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --bg-2: #141414;
+  --bg-3: #1c1c1c;
+  --border: #222;
+  --text: #f0f0f0;
+  --text-dim: #9a9a9a;
+  --text-muted: #666;
+  --red: #ff2d2d;
+  --red-dim: #cc1f1f;
+  --red-glow: rgba(255, 45, 45, 0.15);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+  font-feature-settings: "cv02", "cv03", "cv11";
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 280px;
+  min-height: 100vh;
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  background: var(--bg-2);
+  z-index: 10;
+}
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px 26px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-logo .logo-mark {
+  width: 32px; height: 32px;
+  background: var(--red);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  font-size: 16px;
+  box-shadow: 0 0 20px var(--red-glow);
+}
+.sidebar-logo span { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+.sidebar-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 16px 24px 8px;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 24px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-dim);
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { color: var(--text); background: var(--bg-3); }
+.sidebar-item.active {
+  color: var(--red);
+  border-left-color: var(--red);
+  background: rgba(255, 45, 45, 0.08);
+  font-weight: 500;
+}
+.sidebar-item .icon { font-size: 15px; width: 20px; text-align: center; }
+
+/* ── Main ── */
+.main {
+  margin-left: 280px;
+  flex: 1;
+  min-height: 100vh;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 14px 40px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-right: auto;
+  min-width: 240px;
+  background: var(--bg-2);
+}
+.search-box svg { width: 14px; height: 14px; opacity: 0.5; }
+
+/* Language dropdown */
+.lang-dropdown { position: relative; }
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text);
+  transition: border-color 0.15s, background 0.15s;
+}
+.lang-btn:hover { border-color: var(--red); background: var(--bg-3); }
+.lang-btn svg { width: 13px; height: 13px; }
+.lang-menu {
+  display: none;
+  position: absolute;
+  top: 44px;
+  right: 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  min-width: 180px;
+  z-index: 100;
+  overflow: hidden;
+  max-height: 380px;
+  overflow-y: auto;
+}
+.lang-menu.show { display: block; }
+.lang-option {
+  padding: 10px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-dim);
+  transition: all 0.1s;
+}
+.lang-option:hover { background: var(--bg-3); color: var(--red); }
+.lang-option.active { color: var(--red); font-weight: 600; background: rgba(255,45,45,0.08); }
+
+/* ── Content ── */
+.content {
+  max-width: 820px;
+  padding: 48px 56px 100px;
+}
+.content h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  letter-spacing: -0.8px;
+}
+.content h1 .emoji { font-size: 30px; }
+.content h1 .up { color: var(--red); }
+.content .subtitle {
+  font-size: 16px;
+  color: var(--text-dim);
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+.content h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 40px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -0.3px;
+}
+.content h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 24px 0 10px;
+  color: var(--text);
+}
+.content p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+.content ol, .content ul {
+  margin: 12px 0 20px 22px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-dim);
+}
+.content li { margin-bottom: 8px; }
+.content li ul { margin-top: 6px; margin-bottom: 0; }
+.content strong { color: var(--text); font-weight: 600; }
+.content li::marker { color: var(--red); }
+
+/* Callout */
+.callout {
+  background: rgba(255,45,45,0.06);
+  border-left: 3px solid var(--red);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 20px 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+.callout strong { color: var(--red); font-weight: 600; }
+
+/* Table */
+.table-wrap {
+  overflow-x: auto;
+  margin: 16px 0 24px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th {
+  background: var(--bg-2);
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg-3); color: var(--text); }
+
+/* Code/Formula */
+.formula, code {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--red);
+}
+.formula {
+  padding: 16px 20px;
+  margin: 12px 0 20px;
+  line-height: 1.8;
+  color: var(--text-dim);
+  display: block;
+}
+.formula strong { color: var(--red); }
+code {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+/* Contract row */
+.contract-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+.contract-row .label { color: var(--text); font-weight: 600; }
+.contract-row .value {
+  font-family: 'SF Mono', monospace;
+  color: var(--red);
+  font-size: 12px;
+  word-break: break-all;
+}
+.contract-row .value.tbd { color: var(--text-muted); font-style: italic; }
+
+/* Section */
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RTL */
+body.rtl { direction: rtl; }
+body.rtl .sidebar { left: auto; right: 0; border-right: none; border-left: 1px solid var(--border); }
+body.rtl .main { margin-left: 0; margin-right: 280px; }
+body.rtl .sidebar-item { border-left: none; border-right: 3px solid transparent; }
+body.rtl .sidebar-item.active { border-right-color: var(--red); border-left: none; }
+body.rtl .callout { border-left: none; border-right: 3px solid var(--red); border-radius: 8px 0 0 8px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #333; }
+
+/* Mobile */
+@media (max-width: 860px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  body.rtl .main { margin-right: 0; }
+  .content { padding: 28px 20px 60px; }
+  .search-box { min-width: auto; flex: 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">C</div>
+    <span>Cloverse</span>
+  </div>
+
+  <div class="sidebar-section-label" data-i18n="sidebar_intro">INTRODUCTION</div>
+  <div class="sidebar-item active" data-section="overview">
+    <span class="icon">🎯</span>
+    <span data-i18n="nav_overview">Overview</span>
+  </div>
+
+  <div class="sidebar-section-label" data-i18n="sidebar_guide">PRODUCT GUIDE</div>
+  <div class="sidebar-item" data-section="how">
+    <span class="icon">📋</span>
+    <span data-i18n="nav_how">How It Works</span>
+  </div>
+  <div class="sidebar-item" data-section="mech">
+    <span class="icon">⚙️</span>
+    <span data-i18n="nav_mech">Mechanics & Fees</span>
+  </div>
+  <div class="sidebar-item" data-section="out">
+    <span class="icon">⚖️</span>
+    <span data-i18n="nav_out">Outcomes & Rules</span>
+  </div>
+
+  <div class="sidebar-section-label" data-i18n="sidebar_infra">INFRASTRUCTURE</div>
+  <div class="sidebar-item" data-section="oracle">
+    <span class="icon">🔮</span>
+    <span data-i18n="nav_oracle">Price Feeds</span>
+  </div>
+  <div class="sidebar-item" data-section="contracts">
+    <span class="icon">📍</span>
+    <span data-i18n="nav_contracts">Contract Addresses</span>
+  </div>
+
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span data-i18n="search">Search...</span>
+    </div>
+    <div class="lang-dropdown">
+      <button class="lang-btn" id="langBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
+        <span id="currentLang">English</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <div class="lang-option active" data-lang="en">🇺🇸 English</div>
+        <div class="lang-option" data-lang="zh">🇨🇳 中文</div>
+        <div class="lang-option" data-lang="es">🇪🇸 Español</div>
+        <div class="lang-option" data-lang="hi">🇮🇳 हिन्दी</div>
+        <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
+        <div class="lang-option" data-lang="pt">🇵🇹 Português</div>
+        <div class="lang-option" data-lang="ru">🇷🇺 Русский</div>
+        <div class="lang-option" data-lang="ja">🇯🇵 日本語</div>
+        <div class="lang-option" data-lang="fr">🇫🇷 Français</div>
+        <div class="lang-option" data-lang="ko">🇰🇷 한국어</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="content section active" id="overview">
+    <h1><span class="up" data-i18n="title_up">UP</span> &amp; <span class="up" data-i18n="title_down">DOWN</span></h1>
+    <p class="subtitle" data-i18n="overview_sub">Predict the trend, raise your stakes, and win.</p>
+    <p data-i18n="overview_p1"><strong>UP &amp; DOWN</strong> is a decentralized, high-fidelity prediction platform built on the Chiliz Chain. It allows you to capitalize on the price movements of CHZ in real time.</p>
+    <div class="callout">
+      <strong data-i18n="overview_callout_t">What is UP &amp; DOWN?</strong><br>
+      <span data-i18n="overview_callout_b">Predict whether the CHZ price will go UP or DOWN within a 10 minute round. If your prediction is correct when the round closes, you share the prize pool with other winners.</span>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="content section" id="how">
+    <h1><span class="emoji">📋</span> <span data-i18n="how_t">Summary: How It Works</span></h1>
+    <p class="subtitle" data-i18n="how_sub">A step by step walkthrough of the prediction flow.</p>
+    <ol>
+      <li data-i18n="how_1">UP &amp; DOWN exclusively supports the <strong>CHZ/USD</strong> pair.</li>
+      <li data-i18n="how_2">Predict if the CHZ price will be higher (<strong>UP</strong>) or lower (<strong>DOWN</strong>) than the Locked Price when the 10 minute round concludes.</li>
+      <li data-i18n="how_3">Enter your desired amount of CHZ.</li>
+      <li data-i18n="how_4">Once your entry is submitted for a <strong>"LIVE"</strong> round, it cannot be edited, cancelled, or removed.</li>
+      <li data-i18n="how_5">Win or lose:
+        <ul>
+          <li data-i18n="how_5a"><strong>UP Wins:</strong> If Closed Price &gt; Locked Price at the end of the round.</li>
+          <li data-i18n="how_5b"><strong>DOWN Wins:</strong> If Closed Price &lt; Locked Price at the end of the round.</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+
+  <!-- Mechanics -->
+  <div class="content section" id="mech">
+    <h1><span class="emoji">⚙️</span> <span data-i18n="mech_t">Mechanics &amp; Fees</span></h1>
+    <p class="subtitle" data-i18n="mech_sub">Technical details on rounds, fees, and payout calculations.</p>
+    <ul>
+      <li data-i18n="mech_1"><strong>Blockchain:</strong> Powered by Chiliz Chain (Mainnet).</li>
+      <li data-i18n="mech_2"><strong>Round Frequency:</strong> Rolling rounds occur every 10 minutes.</li>
+      <li data-i18n="mech_3"><strong>Platform Fee:</strong> A small portion of the total prize pool is allocated to <strong>$FAN</strong>. These funds are dedicated to continuous platform development and are also subject to buyback and burn.</li>
+      <li data-i18n="mech_4"><strong>Winnings:</strong> Users can claim their rewards immediately after a round is finalized and on-chain data is verified.</li>
+    </ul>
+
+    <h2 data-i18n="mech_payout_t">Payout Calculation</h2>
+    <p data-i18n="mech_payout_d">Payouts are based on the ratio of bets in each pool:</p>
+    <div class="formula">
+      <strong>Payout Ratio (UP Pool)</strong> = Total value of both pools &divide; Value of UP Pool<br>
+      <strong>Payout Ratio (DOWN Pool)</strong> = Total value of both pools &divide; Value of DOWN Pool
+    </div>
+  </div>
+
+  <!-- Outcomes -->
+  <div class="content section" id="out">
+    <h1><span class="emoji">⚖️</span> <span data-i18n="out_t">Outcomes &amp; Special Rules</span></h1>
+    <p class="subtitle" data-i18n="out_sub">What happens when a round closes.</p>
+    <ul>
+      <li data-i18n="out_1"><strong>Victory:</strong> Share the total prize pool with fellow winners.</li>
+      <li data-i18n="out_2"><strong>Loss:</strong> Your entry is forfeited to the winning side of the pool.</li>
+      <li data-i18n="out_3"><strong>Tie (Locked Price = Closed Price):</strong> In the rare event of an exact price match, the house retains all entries.</li>
+      <li data-i18n="out_4"><strong>Single-Sided Betting:</strong> If there are no opposing bets, winners reclaim their initial entry minus the service fee.</li>
+      <li data-i18n="out_5"><strong>System Cancellation:</strong> If an Oracle error occurs, all participants receive a 100% refund of their initial entry.</li>
+    </ul>
+  </div>
+
+  <!-- Oracle -->
+  <div class="content section" id="oracle">
+    <h1><span class="emoji">🔮</span> <span data-i18n="oracle_t">Price Feeds (Oracle)</span></h1>
+    <p class="subtitle" data-i18n="oracle_sub">How UP &amp; DOWN determines the price of CHZ each round.</p>
+    <p data-i18n="oracle_intro">UP &amp; DOWN prioritizes accuracy and speed by utilizing <strong>Pyth Network</strong> as its primary data source.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="oracle_th1">Chain</th>
+            <th data-i18n="oracle_th2">Market</th>
+            <th data-i18n="oracle_th3">Purpose</th>
+            <th data-i18n="oracle_th4">Oracle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Chiliz Chain</td>
+            <td>CHZ/USD</td>
+            <td data-i18n="oracle_td3">Sets the Lock Price and Closed Price (updated ~ up to 20 seconds)</td>
+            <td>Pyth Network</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 data-i18n="oracle_why_t">Why Pyth Network?</h2>
+    <p data-i18n="oracle_why_b">Unlike traditional oracles, Pyth provides sub-second latency and institutional-grade data directly from first-party financial sources. This ensures that the prices used for settlement are transparent, manipulation-resistant, and reflect the true global market value of CHZ at the exact moment a round closes.</p>
+  </div>
+
+  <!-- Contracts -->
+  <div class="content section" id="contracts">
+    <h1><span class="emoji">📍</span> <span data-i18n="contracts_t">Contract Addresses</span></h1>
+    <p class="subtitle" data-i18n="contracts_sub">On-chain contract references for Cloverse.</p>
+
+    <div class="contract-row">
+      <span class="label">CHZ/USD</span>
+      <span class="value tbd" data-i18n="tbd">To be announced</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ========================================
+// 10 language translations
+// ========================================
+const t = {
+  en: {
+    sidebar_intro:"INTRODUCTION", sidebar_guide:"PRODUCT GUIDE", sidebar_infra:"INFRASTRUCTURE",     nav_overview:"Overview", nav_how:"How It Works", nav_mech:"Mechanics & Fees", nav_out:"Outcomes & Rules", nav_oracle:"Price Feeds", nav_contracts:"Contract Addresses",     search:"Search...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"Predict the trend, raise your stakes, and win.",
+    overview_p1:"<strong>UP & DOWN</strong> is a decentralized, high-fidelity prediction platform built on the Chiliz Chain. It allows you to capitalize on the price movements of CHZ in real time.",
+    overview_callout_t:"What is UP & DOWN?",
+    overview_callout_b:"Predict whether the CHZ price will go UP or DOWN within a 10 minute round. If your prediction is correct when the round closes, you share the prize pool with other winners.",
+    how_t:"Summary: How It Works", how_sub:"A step by step walkthrough of the prediction flow.",
+    how_1:"UP & DOWN exclusively supports the <strong>CHZ/USD</strong> pair.",
+    how_2:"Predict if the CHZ price will be higher (<strong>UP</strong>) or lower (<strong>DOWN</strong>) than the Locked Price when the 10 minute round concludes.",
+    how_3:"Enter your desired amount of CHZ.",
+    how_4:"Once your entry is submitted for a <strong>\"LIVE\"</strong> round, it cannot be edited, cancelled, or removed.",
+    how_5:"Win or lose:", how_5a:"<strong>UP Wins:</strong> If Closed Price > Locked Price at the end of the round.",
+    how_5b:"<strong>DOWN Wins:</strong> If Closed Price < Locked Price at the end of the round.",
+    mech_t:"Mechanics & Fees", mech_sub:"Technical details on rounds, fees, and payout calculations.",
+    mech_1:"<strong>Blockchain:</strong> Powered by Chiliz Chain (Mainnet).",
+    mech_2:"<strong>Round Frequency:</strong> Rolling rounds occur every 10 minutes.",
+    mech_3:"<strong>Platform Fee:</strong> A small portion of the total prize pool is allocated to <strong>$FAN</strong>. These funds are dedicated to continuous platform development and are also subject to buyback and burn.",
+    mech_4:"<strong>Winnings:</strong> Users can claim their rewards immediately after a round is finalized and on-chain data is verified.",
+    mech_payout_t:"Payout Calculation", mech_payout_d:"Payouts are based on the ratio of bets in each pool:",
+    out_t:"Outcomes & Special Rules", out_sub:"What happens when a round closes.",
+    out_1:"<strong>Victory:</strong> Share the total prize pool with fellow winners.",
+    out_2:"<strong>Loss:</strong> Your entry is forfeited to the winning side of the pool.",
+    out_3:"<strong>Tie (Locked Price = Closed Price):</strong> In the rare event of an exact price match, the house retains all entries.",
+    out_4:"<strong>Single-Sided Betting:</strong> If there are no opposing bets, winners reclaim their initial entry minus the service fee.",
+    out_5:"<strong>System Cancellation:</strong> If an Oracle error occurs, all participants receive a 100% refund of their initial entry.",
+    oracle_t:"Price Feeds (Oracle)", oracle_sub:"How UP & DOWN determines the price of CHZ each round.",
+    oracle_intro:"UP & DOWN prioritizes accuracy and speed by utilizing <strong>Pyth Network</strong> as its primary data source.",
+    oracle_th1:"Chain", oracle_th2:"Market", oracle_th3:"Purpose", oracle_th4:"Oracle",
+    oracle_td3:"Sets the Lock Price and Closed Price (updated ~ up to 20 seconds)",
+    oracle_why_t:"Why Pyth Network?",
+    oracle_why_b:"Unlike traditional oracles, Pyth provides sub-second latency and institutional-grade data directly from first-party financial sources. This ensures that the prices used for settlement are transparent, manipulation-resistant, and reflect the true global market value of CHZ at the exact moment a round closes.",
+    contracts_t:"Contract Addresses", contracts_sub:"On-chain contract references for Cloverse.", tbd:"To be announced"
+  },
+  zh: {
+    sidebar_intro:"介绍", sidebar_guide:"产品指南", sidebar_infra:"基础设施",     nav_overview:"概览", nav_how:"使用方法", nav_mech:"机制与费用", nav_out:"结果与规则", nav_oracle:"价格信息源", nav_contracts:"合约地址",     search:"搜索...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"预测趋势，提高赌注，赢取奖励。",
+    overview_p1:"<strong>UP & DOWN</strong>是一个建立在Chiliz Chain上的去中心化高保真预测平台，让您实时利用CHZ价格变动获利。",
+    overview_callout_t:"什么是UP & DOWN？",
+    overview_callout_b:"预测CHZ价格在10分钟回合内是上涨(UP)还是下跌(DOWN)。如果回合结束时预测正确，您将与其他赢家分享奖池。",
+    how_t:"摘要：运作方式", how_sub:"预测流程的逐步说明。",
+    how_1:"UP & DOWN仅支持<strong>CHZ/USD</strong>交易对。",
+    how_2:"预测10分钟回合结束时，CHZ价格将高于(<strong>UP</strong>)还是低于(<strong>DOWN</strong>)锁定价格。",
+    how_3:"输入您想要的CHZ数量。",
+    how_4:"一旦提交到<strong>\"LIVE\"</strong>回合，将无法编辑、取消或撤回。",
+    how_5:"输赢判定：", how_5a:"<strong>UP获胜：</strong>回合结束时收盘价 > 锁定价格。",
+    how_5b:"<strong>DOWN获胜：</strong>回合结束时收盘价 < 锁定价格。",
+    mech_t:"机制与费用", mech_sub:"关于回合、费用和支付计算的技术细节。",
+    mech_1:"<strong>区块链：</strong>基于Chiliz Chain（主网）。",
+    mech_2:"<strong>回合频率：</strong>每10分钟进行滚动回合。",
+    mech_3:"<strong>平台费用：</strong>奖池总额的一小部分分配给<strong>$FAN</strong>。这些资金用于持续的平台开发，也适用于回购和销毁。",
+    mech_4:"<strong>奖金领取：</strong>回合确定且链上数据验证后，用户可立即领取奖励。",
+    mech_payout_t:"支付计算", mech_payout_d:"支付基于每个池中的投注比率：",
+    out_t:"结果与特殊规则", out_sub:"回合结束后会发生什么。",
+    out_1:"<strong>胜利：</strong>与其他赢家共享总奖池。",
+    out_2:"<strong>失败：</strong>您的参与金额归入获胜方池中。",
+    out_3:"<strong>平局（锁定价格 = 收盘价）：</strong>价格完全匹配的罕见情况下，庄家保留所有参与金额。",
+    out_4:"<strong>单边投注：</strong>如果没有对手方投注，赢家扣除服务费后收回初始参与金额。",
+    out_5:"<strong>系统取消：</strong>如果发生预言机错误，所有参与者将获得初始参与金额的100%退款。",
+    oracle_t:"价格信息源（预言机）", oracle_sub:"UP & DOWN如何确定每回合的CHZ价格。",
+    oracle_intro:"UP & DOWN优先考虑准确性和速度，使用<strong>Pyth Network</strong>作为主要数据源。",
+    oracle_th1:"链", oracle_th2:"市场", oracle_th3:"用途", oracle_th4:"预言机",
+    oracle_td3:"设置锁定价格和收盘价（约每20秒更新一次）",
+    oracle_why_t:"为什么选择Pyth Network？",
+    oracle_why_b:"与传统预言机不同，Pyth直接从一手金融数据源提供亚秒级延迟和机构级数据，确保用于结算的价格透明、抗操纵，并在回合关闭的确切时刻准确反映CHZ的真实全球市场价值。",
+    contracts_t:"合约地址", contracts_sub:"Cloverse的链上合约引用。", tbd:"待公布"
+  },
+  es: {
+    sidebar_intro:"INTRODUCCIÓN", sidebar_guide:"GUÍA DEL PRODUCTO", sidebar_infra:"INFRAESTRUCTURA",     nav_overview:"Resumen", nav_how:"Cómo Funciona", nav_mech:"Mecánica y Comisiones", nav_out:"Resultados y Reglas", nav_oracle:"Feeds de Precio", nav_contracts:"Direcciones de Contrato",     search:"Buscar...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"Predice la tendencia, sube tus apuestas y gana.",
+    overview_p1:"<strong>UP & DOWN</strong> es una plataforma de predicción descentralizada y de alta fidelidad construida en Chiliz Chain. Permite capitalizar los movimientos del precio de CHZ en tiempo real.",
+    overview_callout_t:"¿Qué es UP & DOWN?",
+    overview_callout_b:"Predice si el precio de CHZ subirá (UP) o bajará (DOWN) en una ronda de 10 minutos. Si aciertas cuando termina la ronda, compartes el premio con otros ganadores.",
+    how_t:"Resumen: Cómo Funciona", how_sub:"Flujo paso a paso de la predicción.",
+    how_1:"UP & DOWN soporta exclusivamente el par <strong>CHZ/USD</strong>.",
+    how_2:"Predice si el precio de CHZ será mayor (<strong>UP</strong>) o menor (<strong>DOWN</strong>) que el Precio Bloqueado cuando termine la ronda de 10 minutos.",
+    how_3:"Ingresa la cantidad de CHZ deseada.",
+    how_4:"Una vez enviada tu entrada a una ronda <strong>\"LIVE\"</strong>, no puede editarse, cancelarse ni eliminarse.",
+    how_5:"Ganar o perder:", how_5a:"<strong>UP Gana:</strong> Si Precio de Cierre > Precio Bloqueado al final de la ronda.",
+    how_5b:"<strong>DOWN Gana:</strong> Si Precio de Cierre < Precio Bloqueado al final de la ronda.",
+    mech_t:"Mecánica y Comisiones", mech_sub:"Detalles técnicos sobre rondas, comisiones y cálculo de pagos.",
+    mech_1:"<strong>Blockchain:</strong> Impulsado por Chiliz Chain (Mainnet).",
+    mech_2:"<strong>Frecuencia de Ronda:</strong> Rondas continuas cada 10 minutos.",
+    mech_3:"<strong>Comisión de Plataforma:</strong> Una pequeña parte del premio total se destina a <strong>$FAN</strong>. Estos fondos se usan para el desarrollo continuo de la plataforma y también están sujetos a recompra y quema.",
+    mech_4:"<strong>Ganancias:</strong> Los usuarios pueden reclamar sus recompensas inmediatamente tras finalizar la ronda y verificar los datos on-chain.",
+    mech_payout_t:"Cálculo de Pagos", mech_payout_d:"Los pagos se basan en la proporción de apuestas en cada pool:",
+    out_t:"Resultados y Reglas Especiales", out_sub:"Qué ocurre al cerrar una ronda.",
+    out_1:"<strong>Victoria:</strong> Comparte el premio total con los demás ganadores.",
+    out_2:"<strong>Pérdida:</strong> Tu entrada pasa al lado ganador del pool.",
+    out_3:"<strong>Empate (Precio Bloqueado = Precio de Cierre):</strong> En el raro caso de coincidencia exacta, la casa retiene todas las entradas.",
+    out_4:"<strong>Apuesta Unilateral:</strong> Si no hay apuestas opuestas, los ganadores recuperan su entrada menos la comisión.",
+    out_5:"<strong>Cancelación del Sistema:</strong> Si ocurre un error de Oracle, todos reciben un reembolso del 100%.",
+    oracle_t:"Feeds de Precio (Oracle)", oracle_sub:"Cómo UP & DOWN determina el precio de CHZ en cada ronda.",
+    oracle_intro:"UP & DOWN prioriza precisión y velocidad usando <strong>Pyth Network</strong> como fuente de datos principal.",
+    oracle_th1:"Cadena", oracle_th2:"Mercado", oracle_th3:"Propósito", oracle_th4:"Oracle",
+    oracle_td3:"Establece el Precio Bloqueado y de Cierre (actualizado ~ cada 20 segundos)",
+    oracle_why_t:"¿Por qué Pyth Network?",
+    oracle_why_b:"A diferencia de los oracles tradicionales, Pyth ofrece latencia sub-segundo y datos de grado institucional directamente de fuentes financieras de primera mano. Esto garantiza precios transparentes, resistentes a manipulación y que reflejan el verdadero valor global de CHZ al cerrar la ronda.",
+    contracts_t:"Direcciones de Contrato", contracts_sub:"Referencias on-chain de Cloverse.", tbd:"Por anunciar"
+  },
+  hi: {
+    sidebar_intro:"परिचय", sidebar_guide:"उत्पाद गाइड", sidebar_infra:"बुनियादी ढांचा",     nav_overview:"अवलोकन", nav_how:"कैसे काम करता है", nav_mech:"तंत्र और शुल्क", nav_out:"परिणाम और नियम", nav_oracle:"मूल्य फ़ीड", nav_contracts:"कॉन्ट्रैक्ट पते",     search:"खोजें...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"ट्रेंड का अनुमान लगाएं, दांव बढ़ाएं और जीतें।",
+    overview_p1:"<strong>UP & DOWN</strong> Chiliz Chain पर बना एक विकेंद्रीकृत, उच्च-गुणवत्ता वाला भविष्यवाणी प्लेटफ़ॉर्म है। यह आपको CHZ की कीमत में बदलाव से वास्तविक समय में लाभ कमाने देता है।",
+    overview_callout_t:"UP & DOWN क्या है?",
+    overview_callout_b:"अनुमान लगाएं कि 10 मिनट के राउंड में CHZ की कीमत UP जाएगी या DOWN। यदि राउंड समाप्त होने पर आपकी भविष्यवाणी सही है, तो आप अन्य विजेताओं के साथ पुरस्कार पूल साझा करते हैं।",
+    how_t:"सारांश: कैसे काम करता है", how_sub:"भविष्यवाणी प्रवाह का चरण-दर-चरण विवरण।",
+    how_1:"UP & DOWN केवल <strong>CHZ/USD</strong> जोड़ी का समर्थन करता है।",
+    how_2:"अनुमान लगाएं कि 10 मिनट के राउंड के अंत में CHZ की कीमत लॉक की गई कीमत से अधिक (<strong>UP</strong>) या कम (<strong>DOWN</strong>) होगी।",
+    how_3:"अपनी इच्छित CHZ राशि दर्ज करें।",
+    how_4:"एक बार <strong>\"LIVE\"</strong> राउंड के लिए आपकी एंट्री सबमिट हो गई, तो इसे संपादित, रद्द या हटाया नहीं जा सकता।",
+    how_5:"जीत या हार:", how_5a:"<strong>UP जीतता है:</strong> यदि राउंड के अंत में क्लोजिंग प्राइस > लॉक्ड प्राइस हो।",
+    how_5b:"<strong>DOWN जीतता है:</strong> यदि राउंड के अंत में क्लोजिंग प्राइस < लॉक्ड प्राइस हो।",
+    mech_t:"तंत्र और शुल्क", mech_sub:"राउंड, शुल्क और भुगतान गणनाओं के तकनीकी विवरण।",
+    mech_1:"<strong>ब्लॉकचेन:</strong> Chiliz Chain (मेननेट) पर चलता है।",
+    mech_2:"<strong>राउंड आवृत्ति:</strong> हर 10 मिनट में रोलिंग राउंड होते हैं।",
+    mech_3:"<strong>प्लेटफ़ॉर्म शुल्क:</strong> कुल पुरस्कार पूल का एक छोटा हिस्सा <strong>$FAN</strong> को आवंटित किया जाता है। इन फंडों का उपयोग निरंतर प्लेटफ़ॉर्म विकास के लिए होता है और ये बायबैक एंड बर्न के अधीन भी हैं।",
+    mech_4:"<strong>पुरस्कार:</strong> राउंड अंतिम रूप से तय होने और ऑन-चेन डेटा सत्यापित होने के तुरंत बाद उपयोगकर्ता अपने पुरस्कार का दावा कर सकते हैं।",
+    mech_payout_t:"भुगतान गणना", mech_payout_d:"भुगतान प्रत्येक पूल में दांव के अनुपात पर आधारित होते हैं:",
+    out_t:"परिणाम और विशेष नियम", out_sub:"राउंड बंद होने पर क्या होता है।",
+    out_1:"<strong>विजय:</strong> अन्य विजेताओं के साथ कुल पुरस्कार पूल साझा करें।",
+    out_2:"<strong>हार:</strong> आपकी एंट्री विजेता पक्ष के पूल में जाती है।",
+    out_3:"<strong>टाई (लॉक्ड प्राइस = क्लोजिंग प्राइस):</strong> सटीक मूल्य मिलान के दुर्लभ मामले में, हाउस सभी एंट्रियां रखता है।",
+    out_4:"<strong>एकतरफा दांव:</strong> यदि कोई विपरीत दांव नहीं है, तो विजेता सर्विस फीस घटाकर अपनी प्रारंभिक एंट्री वापस पाते हैं।",
+    out_5:"<strong>सिस्टम रद्दीकरण:</strong> यदि ओरेकल त्रुटि होती है, तो सभी प्रतिभागियों को 100% रिफंड मिलता है।",
+    oracle_t:"मूल्य फ़ीड (ओरेकल)", oracle_sub:"UP & DOWN हर राउंड के लिए CHZ की कीमत कैसे तय करता है।",
+    oracle_intro:"UP & DOWN सटीकता और गति को प्राथमिकता देता है, <strong>Pyth Network</strong> को प्राथमिक डेटा स्रोत के रूप में उपयोग करता है।",
+    oracle_th1:"चेन", oracle_th2:"मार्केट", oracle_th3:"उद्देश्य", oracle_th4:"ओरेकल",
+    oracle_td3:"लॉक प्राइस और क्लोज्ड प्राइस सेट करता है (लगभग 20 सेकंड तक अपडेट)",
+    oracle_why_t:"Pyth Network क्यों?",
+    oracle_why_b:"पारंपरिक ओरेकल के विपरीत, Pyth पहले पक्ष के वित्तीय स्रोतों से सीधे सब-सेकंड लेटेंसी और संस्थागत-ग्रेड डेटा प्रदान करता है। यह सुनिश्चित करता है कि निपटान के लिए उपयोग की गई कीमतें पारदर्शी, हेरफेर-प्रतिरोधी हैं और राउंड बंद होने के सटीक क्षण पर CHZ के वास्तविक वैश्विक बाजार मूल्य को दर्शाती हैं।",
+    contracts_t:"कॉन्ट्रैक्ट पते", contracts_sub:"Cloverse के ऑन-चेन कॉन्ट्रैक्ट संदर्भ।", tbd:"घोषित किया जाना है"
+  },
+  ar: {
+    sidebar_intro:"مقدمة", sidebar_guide:"دليل المنتج", sidebar_infra:"البنية التحتية",     nav_overview:"نظرة عامة", nav_how:"كيف يعمل", nav_mech:"الآلية والرسوم", nav_out:"النتائج والقواعد", nav_oracle:"موجزات الأسعار", nav_contracts:"عناوين العقود",     search:"بحث...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"توقع الاتجاه، ارفع رهاناتك، واربح.",
+    overview_p1:"<strong>UP & DOWN</strong> منصة تنبؤ لامركزية عالية الدقة مبنية على Chiliz Chain. تتيح لك الاستفادة من تحركات سعر CHZ في الوقت الفعلي.",
+    overview_callout_t:"ما هو UP & DOWN؟",
+    overview_callout_b:"توقع ما إذا كان سعر CHZ سيرتفع (UP) أو ينخفض (DOWN) خلال جولة مدتها 10 دقائق. إذا كان توقعك صحيحاً عند انتهاء الجولة، فستشارك في مجمع الجوائز مع الفائزين الآخرين.",
+    how_t:"ملخص: كيف يعمل", how_sub:"شرح خطوة بخطوة لتدفق التنبؤ.",
+    how_1:"يدعم UP & DOWN حصرياً زوج <strong>CHZ/USD</strong>.",
+    how_2:"توقع ما إذا كان سعر CHZ سيكون أعلى (<strong>UP</strong>) أو أقل (<strong>DOWN</strong>) من السعر المقفل عند انتهاء جولة الـ 10 دقائق.",
+    how_3:"أدخل الكمية المرغوبة من CHZ.",
+    how_4:"بمجرد تقديم دخولك لجولة <strong>\"LIVE\"</strong>، لا يمكن تعديله أو إلغاؤه أو إزالته.",
+    how_5:"الفوز أو الخسارة:", how_5a:"<strong>فوز UP:</strong> إذا كان سعر الإغلاق > السعر المقفل في نهاية الجولة.",
+    how_5b:"<strong>فوز DOWN:</strong> إذا كان سعر الإغلاق < السعر المقفل في نهاية الجولة.",
+    mech_t:"الآلية والرسوم", mech_sub:"التفاصيل التقنية حول الجولات والرسوم وحسابات الدفع.",
+    mech_1:"<strong>البلوكتشين:</strong> مدعوم بواسطة Chiliz Chain (الشبكة الرئيسية).",
+    mech_2:"<strong>تكرار الجولة:</strong> جولات متتالية كل 10 دقائق.",
+    mech_3:"<strong>رسوم المنصة:</strong> جزء صغير من إجمالي مجمع الجوائز يُخصص لـ <strong>$FAN</strong>. هذه الأموال مخصصة للتطوير المستمر للمنصة وتخضع أيضاً لإعادة الشراء والحرق.",
+    mech_4:"<strong>المكاسب:</strong> يمكن للمستخدمين المطالبة بمكافآتهم فور الانتهاء من الجولة والتحقق من بيانات السلسلة.",
+    mech_payout_t:"حساب الدفع", mech_payout_d:"تعتمد المدفوعات على نسبة الرهانات في كل مجمع:",
+    out_t:"النتائج والقواعد الخاصة", out_sub:"ماذا يحدث عند إغلاق الجولة.",
+    out_1:"<strong>النصر:</strong> شارك إجمالي مجمع الجوائز مع الفائزين الآخرين.",
+    out_2:"<strong>الخسارة:</strong> يُصادر دخولك إلى الجانب الفائز من المجمع.",
+    out_3:"<strong>تعادل (السعر المقفل = سعر الإغلاق):</strong> في حالة المطابقة الدقيقة، يحتفظ البيت بجميع الدخولات.",
+    out_4:"<strong>الرهان من جانب واحد:</strong> إذا لم تكن هناك رهانات مقابلة، يسترد الفائزون دخولهم الأولي ناقص رسوم الخدمة.",
+    out_5:"<strong>إلغاء النظام:</strong> في حالة حدوث خطأ في Oracle، يتلقى جميع المشاركين استرداداً بنسبة 100%.",
+    oracle_t:"موجزات الأسعار (Oracle)", oracle_sub:"كيف تحدد UP & DOWN سعر CHZ لكل جولة.",
+    oracle_intro:"تعطي UP & DOWN الأولوية للدقة والسرعة باستخدام <strong>Pyth Network</strong> كمصدر بيانات أساسي.",
+    oracle_th1:"السلسلة", oracle_th2:"السوق", oracle_th3:"الغرض", oracle_th4:"Oracle",
+    oracle_td3:"يحدد سعر القفل وسعر الإغلاق (يُحدث كل 20 ثانية تقريباً)",
+    oracle_why_t:"لماذا Pyth Network؟",
+    oracle_why_b:"على عكس Oracle التقليدي، يوفر Pyth زمن استجابة أقل من الثانية وبيانات من الدرجة المؤسسية مباشرة من مصادر مالية من الطرف الأول، مما يضمن أن الأسعار المستخدمة للتسوية شفافة ومقاومة للتلاعب وتعكس القيمة السوقية العالمية الحقيقية لـ CHZ.",
+    contracts_t:"عناوين العقود", contracts_sub:"مراجع العقود على السلسلة لـ Cloverse.", tbd:"سيُعلن عنه"
+  },
+  pt: {
+    sidebar_intro:"INTRODUÇÃO", sidebar_guide:"GUIA DO PRODUTO", sidebar_infra:"INFRAESTRUTURA",     nav_overview:"Visão Geral", nav_how:"Como Funciona", nav_mech:"Mecânica e Taxas", nav_out:"Resultados e Regras", nav_oracle:"Feeds de Preço", nav_contracts:"Endereços de Contrato",     search:"Pesquisar...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"Preveja a tendência, aumente suas apostas e vença.",
+    overview_p1:"<strong>UP & DOWN</strong> é uma plataforma de previsão descentralizada e de alta fidelidade construída na Chiliz Chain. Permite capitalizar os movimentos de preço do CHZ em tempo real.",
+    overview_callout_t:"O que é UP & DOWN?",
+    overview_callout_b:"Preveja se o preço do CHZ subirá (UP) ou cairá (DOWN) em uma rodada de 10 minutos. Se sua previsão estiver correta quando a rodada fechar, você compartilha o prêmio com outros vencedores.",
+    how_t:"Resumo: Como Funciona", how_sub:"Passo a passo do fluxo de previsão.",
+    how_1:"UP & DOWN suporta exclusivamente o par <strong>CHZ/USD</strong>.",
+    how_2:"Preveja se o preço do CHZ será maior (<strong>UP</strong>) ou menor (<strong>DOWN</strong>) que o Preço Travado quando a rodada de 10 minutos terminar.",
+    how_3:"Insira a quantidade desejada de CHZ.",
+    how_4:"Uma vez submetida sua entrada para uma rodada <strong>\"LIVE\"</strong>, ela não pode ser editada, cancelada ou removida.",
+    how_5:"Ganhar ou perder:", how_5a:"<strong>UP Vence:</strong> Se Preço de Fechamento > Preço Travado no final da rodada.",
+    how_5b:"<strong>DOWN Vence:</strong> Se Preço de Fechamento < Preço Travado no final da rodada.",
+    mech_t:"Mecânica e Taxas", mech_sub:"Detalhes técnicos sobre rodadas, taxas e cálculos de pagamento.",
+    mech_1:"<strong>Blockchain:</strong> Alimentado pela Chiliz Chain (Mainnet).",
+    mech_2:"<strong>Frequência de Rodada:</strong> Rodadas contínuas a cada 10 minutos.",
+    mech_3:"<strong>Taxa da Plataforma:</strong> Uma pequena parte do prêmio total é destinada ao <strong>$FAN</strong>. Esses fundos são usados para desenvolvimento contínuo da plataforma e estão sujeitos a recompra e queima.",
+    mech_4:"<strong>Ganhos:</strong> Usuários podem reivindicar recompensas imediatamente após a rodada ser finalizada e os dados on-chain verificados.",
+    mech_payout_t:"Cálculo de Pagamento", mech_payout_d:"Pagamentos são baseados na proporção de apostas em cada pool:",
+    out_t:"Resultados e Regras Especiais", out_sub:"O que acontece quando uma rodada fecha.",
+    out_1:"<strong>Vitória:</strong> Compartilhe o prêmio total com os outros vencedores.",
+    out_2:"<strong>Derrota:</strong> Sua entrada é transferida para o lado vencedor do pool.",
+    out_3:"<strong>Empate (Preço Travado = Preço de Fechamento):</strong> No raro evento de correspondência exata, a casa retém todas as entradas.",
+    out_4:"<strong>Aposta Unilateral:</strong> Se não houver apostas opostas, vencedores recuperam sua entrada menos a taxa de serviço.",
+    out_5:"<strong>Cancelamento do Sistema:</strong> Se ocorrer erro de Oracle, todos os participantes recebem reembolso de 100%.",
+    oracle_t:"Feeds de Preço (Oracle)", oracle_sub:"Como UP & DOWN determina o preço do CHZ a cada rodada.",
+    oracle_intro:"UP & DOWN prioriza precisão e velocidade usando <strong>Pyth Network</strong> como fonte de dados primária.",
+    oracle_th1:"Cadeia", oracle_th2:"Mercado", oracle_th3:"Propósito", oracle_th4:"Oracle",
+    oracle_td3:"Define o Preço Travado e de Fechamento (atualizado ~ a cada 20 segundos)",
+    oracle_why_t:"Por que Pyth Network?",
+    oracle_why_b:"Ao contrário dos oracles tradicionais, a Pyth fornece latência sub-segundo e dados de grau institucional diretamente de fontes financeiras de primeira mão, garantindo preços transparentes, resistentes a manipulação e que refletem o verdadeiro valor global de mercado do CHZ no momento exato do fechamento da rodada.",
+    contracts_t:"Endereços de Contrato", contracts_sub:"Referências de contratos on-chain da Cloverse.", tbd:"A ser anunciado"
+  },
+  ru: {
+    sidebar_intro:"ВВЕДЕНИЕ", sidebar_guide:"РУКОВОДСТВО", sidebar_infra:"ИНФРАСТРУКТУРА",     nav_overview:"Обзор", nav_how:"Как это работает", nav_mech:"Механика и комиссии", nav_out:"Результаты и правила", nav_oracle:"Ценовые фиды", nav_contracts:"Адреса контрактов",     search:"Поиск...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"Предугадай тренд, подними ставки и побеждай.",
+    overview_p1:"<strong>UP & DOWN</strong> — это децентрализованная платформа прогнозов высокой точности на Chiliz Chain. Позволяет зарабатывать на движениях цены CHZ в реальном времени.",
+    overview_callout_t:"Что такое UP & DOWN?",
+    overview_callout_b:"Предскажите, пойдёт ли цена CHZ вверх (UP) или вниз (DOWN) в течение 10-минутного раунда. Если ваш прогноз верен на момент закрытия раунда, вы делите призовой фонд с другими победителями.",
+    how_t:"Кратко: Как это работает", how_sub:"Пошаговое описание процесса прогноза.",
+    how_1:"UP & DOWN поддерживает только пару <strong>CHZ/USD</strong>.",
+    how_2:"Предскажите, будет ли цена CHZ выше (<strong>UP</strong>) или ниже (<strong>DOWN</strong>) зафиксированной цены на момент окончания 10-минутного раунда.",
+    how_3:"Введите желаемую сумму CHZ.",
+    how_4:"После отправки вашей ставки в раунд <strong>\"LIVE\"</strong> её нельзя изменить, отменить или удалить.",
+    how_5:"Победа или поражение:", how_5a:"<strong>UP выигрывает:</strong> если цена закрытия > зафиксированной цены в конце раунда.",
+    how_5b:"<strong>DOWN выигрывает:</strong> если цена закрытия < зафиксированной цены в конце раунда.",
+    mech_t:"Механика и комиссии", mech_sub:"Технические детали раундов, комиссий и расчётов выплат.",
+    mech_1:"<strong>Блокчейн:</strong> Работает на Chiliz Chain (Mainnet).",
+    mech_2:"<strong>Частота раундов:</strong> Непрерывные раунды каждые 10 минут.",
+    mech_3:"<strong>Комиссия платформы:</strong> Небольшая часть призового фонда направляется в <strong>$FAN</strong>. Эти средства идут на развитие платформы и также подлежат buyback and burn.",
+    mech_4:"<strong>Выигрыши:</strong> Пользователи могут забрать награды сразу после завершения раунда и верификации данных в сети.",
+    mech_payout_t:"Расчёт выплат", mech_payout_d:"Выплаты основаны на соотношении ставок в каждом пуле:",
+    out_t:"Результаты и особые правила", out_sub:"Что происходит после закрытия раунда.",
+    out_1:"<strong>Победа:</strong> Делите общий призовой фонд с другими победителями.",
+    out_2:"<strong>Поражение:</strong> Ваша ставка переходит на сторону победителей.",
+    out_3:"<strong>Ничья (Зафиксированная цена = Цена закрытия):</strong> В редком случае точного совпадения дом удерживает все ставки.",
+    out_4:"<strong>Односторонняя ставка:</strong> Если нет противоположных ставок, победители получают свою начальную ставку за вычетом комиссии.",
+    out_5:"<strong>Системная отмена:</strong> При ошибке Oracle все участники получают 100% возврат.",
+    oracle_t:"Ценовые фиды (Oracle)", oracle_sub:"Как UP & DOWN определяет цену CHZ в каждом раунде.",
+    oracle_intro:"UP & DOWN отдаёт приоритет точности и скорости, используя <strong>Pyth Network</strong> как основной источник данных.",
+    oracle_th1:"Сеть", oracle_th2:"Рынок", oracle_th3:"Назначение", oracle_th4:"Oracle",
+    oracle_td3:"Устанавливает Lock Price и Closed Price (обновление ~ каждые 20 секунд)",
+    oracle_why_t:"Почему Pyth Network?",
+    oracle_why_b:"В отличие от традиционных ораклов, Pyth обеспечивает субсекундную задержку и институциональные данные напрямую из первичных финансовых источников. Это гарантирует прозрачность, устойчивость к манипуляциям и отражение истинной мировой рыночной стоимости CHZ в момент закрытия раунда.",
+    contracts_t:"Адреса контрактов", contracts_sub:"Ссылки на on-chain контракты Cloverse.", tbd:"Будет объявлено"
+  },
+  ja: {
+    sidebar_intro:"はじめに", sidebar_guide:"製品ガイド", sidebar_infra:"インフラ",     nav_overview:"概要", nav_how:"利用方法", nav_mech:"メカニズムと手数料", nav_out:"結果とルール", nav_oracle:"価格フィード", nav_contracts:"コントラクトアドレス",     search:"検索...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"トレンドを予測し、ステークを上げ、勝利を掴もう。",
+    overview_p1:"<strong>UP & DOWN</strong>はChiliz Chain上に構築された分散型高精度予測プラットフォームです。CHZの価格変動をリアルタイムで活用できます。",
+    overview_callout_t:"UP & DOWNとは？",
+    overview_callout_b:"10分間のラウンド内でCHZ価格がUP（上昇）するかDOWN（下落）するかを予測。ラウンド終了時に予測が正しければ、他の勝者と賞金プールを分け合います。",
+    how_t:"概要：仕組み", how_sub:"予測フローのステップバイステップガイド。",
+    how_1:"UP & DOWNは<strong>CHZ/USD</strong>ペアのみ対応。",
+    how_2:"10分ラウンド終了時にCHZ価格がロック価格より高くなるか（<strong>UP</strong>）、低くなるか（<strong>DOWN</strong>）を予測。",
+    how_3:"希望するCHZ数量を入力。",
+    how_4:"<strong>\"LIVE\"</strong>ラウンドにエントリー送信後は編集、キャンセル、削除不可。",
+    how_5:"勝敗判定：", how_5a:"<strong>UP勝利：</strong>ラウンド終了時の終値 > ロック価格の場合。",
+    how_5b:"<strong>DOWN勝利：</strong>ラウンド終了時の終値 < ロック価格の場合。",
+    mech_t:"メカニズムと手数料", mech_sub:"ラウンド、手数料、配当計算の技術的詳細。",
+    mech_1:"<strong>ブロックチェーン：</strong>Chiliz Chain（メインネット）で稼働。",
+    mech_2:"<strong>ラウンド頻度：</strong>10分ごとにローリングラウンド。",
+    mech_3:"<strong>プラットフォーム手数料：</strong>賞金プールの一部が<strong>$FAN</strong>に配分されます。継続的な開発に使われ、バイバック＆バーンの対象。",
+    mech_4:"<strong>賞金受取：</strong>ラウンド確定後、オンチェーンデータ検証直後に報酬受取可。",
+    mech_payout_t:"配当計算", mech_payout_d:"配当は各プールのベット比率に基づく：",
+    out_t:"結果と特別ルール", out_sub:"ラウンド終了後の動作。",
+    out_1:"<strong>勝利：</strong>他の勝者と賞金プールを分け合う。",
+    out_2:"<strong>敗北：</strong>エントリー額が勝利側プールに移る。",
+    out_3:"<strong>引き分け（ロック価格 = 終値）：</strong>完全一致の稀なケースでハウスが全額保有。",
+    out_4:"<strong>片側ベッティング：</strong>対抗ベットがない場合、勝者は手数料を引いた初期額を回収。",
+    out_5:"<strong>システムキャンセル：</strong>オラクルエラー発生時、全参加者に100%返金。",
+    oracle_t:"価格フィード（オラクル）", oracle_sub:"UP & DOWNが各ラウンドのCHZ価格を決定する方法。",
+    oracle_intro:"UP & DOWNは<strong>Pyth Network</strong>を主要データソースとして精度と速度を優先。",
+    oracle_th1:"チェーン", oracle_th2:"マーケット", oracle_th3:"用途", oracle_th4:"オラクル",
+    oracle_td3:"ロック価格と終値を設定（約20秒ごとに更新）",
+    oracle_why_t:"なぜPyth Networkなのか？",
+    oracle_why_b:"従来のオラクルと異なり、Pythはファーストパーティ金融データソースからサブ秒レイテンシーと機関投資家グレードのデータを直接提供。決済価格は透明で操作に強く、ラウンド終了時のCHZの真のグローバル市場価値を反映。",
+    contracts_t:"コントラクトアドレス", contracts_sub:"Cloverseのオンチェーンコントラクト参照。", tbd:"発表予定"
+  },
+  fr: {
+    sidebar_intro:"INTRODUCTION", sidebar_guide:"GUIDE DU PRODUIT", sidebar_infra:"INFRASTRUCTURE",     nav_overview:"Aperçu", nav_how:"Comment ça marche", nav_mech:"Mécanique et frais", nav_out:"Résultats et règles", nav_oracle:"Flux de prix", nav_contracts:"Adresses de contrat",     search:"Rechercher...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"Prédisez la tendance, augmentez vos mises et gagnez.",
+    overview_p1:"<strong>UP & DOWN</strong> est une plateforme de prédiction décentralisée et haute fidélité construite sur Chiliz Chain. Elle permet de capitaliser sur les mouvements de prix de CHZ en temps réel.",
+    overview_callout_t:"Qu'est-ce que UP & DOWN ?",
+    overview_callout_b:"Prédisez si le prix de CHZ montera (UP) ou baissera (DOWN) dans un tour de 10 minutes. Si votre prédiction est correcte à la clôture du tour, vous partagez le pool de prix avec les autres gagnants.",
+    how_t:"Résumé : Comment ça marche", how_sub:"Explication étape par étape du flux de prédiction.",
+    how_1:"UP & DOWN supporte exclusivement la paire <strong>CHZ/USD</strong>.",
+    how_2:"Prédisez si le prix CHZ sera supérieur (<strong>UP</strong>) ou inférieur (<strong>DOWN</strong>) au prix verrouillé à la fin du tour de 10 minutes.",
+    how_3:"Entrez le montant de CHZ souhaité.",
+    how_4:"Une fois votre entrée soumise pour un tour <strong>\"LIVE\"</strong>, elle ne peut être modifiée, annulée ou supprimée.",
+    how_5:"Gagner ou perdre :", how_5a:"<strong>UP gagne :</strong> Si Prix de clôture > Prix verrouillé à la fin du tour.",
+    how_5b:"<strong>DOWN gagne :</strong> Si Prix de clôture < Prix verrouillé à la fin du tour.",
+    mech_t:"Mécanique et frais", mech_sub:"Détails techniques sur les tours, frais et calculs de paiement.",
+    mech_1:"<strong>Blockchain :</strong> Alimenté par Chiliz Chain (Mainnet).",
+    mech_2:"<strong>Fréquence des tours :</strong> Tours continus toutes les 10 minutes.",
+    mech_3:"<strong>Frais de plateforme :</strong> Une petite partie du pool de prix est allouée à <strong>$FAN</strong>. Ces fonds sont dédiés au développement continu et soumis au buyback and burn.",
+    mech_4:"<strong>Gains :</strong> Les utilisateurs peuvent réclamer leurs récompenses immédiatement après la finalisation du tour et la vérification des données on-chain.",
+    mech_payout_t:"Calcul des paiements", mech_payout_d:"Les paiements sont basés sur le ratio des mises dans chaque pool :",
+    out_t:"Résultats et règles spéciales", out_sub:"Ce qui se passe à la clôture d'un tour.",
+    out_1:"<strong>Victoire :</strong> Partagez le pool de prix total avec les autres gagnants.",
+    out_2:"<strong>Perte :</strong> Votre entrée est transférée au côté gagnant du pool.",
+    out_3:"<strong>Égalité (Prix verrouillé = Prix de clôture) :</strong> Dans le rare cas de correspondance exacte, la maison conserve toutes les entrées.",
+    out_4:"<strong>Pari unilatéral :</strong> S'il n'y a pas de paris opposés, les gagnants récupèrent leur entrée initiale moins les frais.",
+    out_5:"<strong>Annulation système :</strong> En cas d'erreur Oracle, tous les participants reçoivent un remboursement à 100%.",
+    oracle_t:"Flux de prix (Oracle)", oracle_sub:"Comment UP & DOWN détermine le prix de CHZ à chaque tour.",
+    oracle_intro:"UP & DOWN privilégie précision et vitesse en utilisant <strong>Pyth Network</strong> comme source de données principale.",
+    oracle_th1:"Chaîne", oracle_th2:"Marché", oracle_th3:"Objectif", oracle_th4:"Oracle",
+    oracle_td3:"Définit le Prix verrouillé et le Prix de clôture (mis à jour ~ toutes les 20 secondes)",
+    oracle_why_t:"Pourquoi Pyth Network ?",
+    oracle_why_b:"Contrairement aux oracles traditionnels, Pyth fournit une latence inférieure à la seconde et des données de qualité institutionnelle directement depuis des sources financières de première main, garantissant des prix transparents, résistants à la manipulation et reflétant la vraie valeur marchande mondiale de CHZ au moment exact de la clôture du tour.",
+    contracts_t:"Adresses de contrat", contracts_sub:"Références on-chain des contrats Cloverse.", tbd:"À annoncer"
+  },
+  ko: {
+    sidebar_intro:"소개", sidebar_guide:"제품 가이드", sidebar_infra:"인프라",     nav_overview:"개요", nav_how:"이용 방법", nav_mech:"메커니즘 및 수수료", nav_out:"결과 및 규칙", nav_oracle:"가격 피드", nav_contracts:"컨트랙트 주소",     search:"검색...", title_up:"UP", title_down:"DOWN",
+    overview_sub:"트렌드를 예측하고, 스테이크를 올리고, 승리하세요.",
+    overview_p1:"<strong>UP & DOWN</strong>은 칠리즈 체인 위에 구축된 탈중앙화 고정밀 예측 플랫폼입니다. CHZ의 가격 변동을 실시간으로 활용할 수 있습니다.",
+    overview_callout_t:"UP & DOWN이란?",
+    overview_callout_b:"10분 라운드 동안 CHZ 가격이 UP(상승)할지 DOWN(하락)할지 예측합니다. 라운드 종료 시 예측이 맞으면 다른 승자들과 상금 풀을 나눠 가집니다.",
+    how_t:"요약: 이용 방법", how_sub:"예측 플로우의 단계별 안내.",
+    how_1:"UP & DOWN은 <strong>CHZ/USD</strong> 페어만 지원합니다.",
+    how_2:"10분 라운드 종료 시 CHZ 가격이 잠금 가격보다 높을지(<strong>UP</strong>) 낮을지(<strong>DOWN</strong>) 예측하세요.",
+    how_3:"원하는 CHZ 수량을 입력하세요.",
+    how_4:"<strong>\"LIVE\"</strong> 라운드에 참가 등록 완료 시, 수정/취소/삭제가 불가능합니다.",
+    how_5:"승패 결정:", how_5a:"<strong>UP 승리:</strong> 라운드 종료 시 종가 > 잠금 가격인 경우.",
+    how_5b:"<strong>DOWN 승리:</strong> 라운드 종료 시 종가 < 잠금 가격인 경우.",
+    mech_t:"메커니즘 및 수수료", mech_sub:"라운드, 수수료, 배당 계산에 대한 기술적 세부사항.",
+    mech_1:"<strong>블록체인:</strong> 칠리즈 체인(메인넷) 기반.",
+    mech_2:"<strong>라운드 주기:</strong> 10분마다 롤링 라운드 진행.",
+    mech_3:"<strong>플랫폼 수수료:</strong> 총 상금 풀의 일부가 <strong>$FAN</strong>에 배분됩니다. 지속적인 플랫폼 개발에 사용되며, 바이백 앤 번의 대상입니다.",
+    mech_4:"<strong>상금 수령:</strong> 라운드 확정 및 온체인 데이터 검증 직후 즉시 수령 가능.",
+    mech_payout_t:"배당 계산", mech_payout_d:"배당은 각 풀의 베팅 비율에 기반합니다:",
+    out_t:"결과 및 특별 규칙", out_sub:"라운드 종료 후 처리 방식.",
+    out_1:"<strong>승리:</strong> 다른 승자들과 총 상금 풀을 나눠 가집니다.",
+    out_2:"<strong>패배:</strong> 참가 금액이 승리 측 풀에 귀속됩니다.",
+    out_3:"<strong>무승부 (잠금 가격 = 종가):</strong> 가격이 정확히 일치하는 드문 경우, 하우스가 모든 참가 금액을 보유합니다.",
+    out_4:"<strong>단방향 베팅:</strong> 상대편 베팅이 없는 경우, 승자는 서비스 수수료를 제외한 초기 참가 금액을 돌려받습니다.",
+    out_5:"<strong>시스템 취소:</strong> 오라클 오류 발생 시, 모든 참가자는 100% 환불됩니다.",
+    oracle_t:"가격 피드 (오라클)", oracle_sub:"UP & DOWN이 각 라운드의 CHZ 가격을 결정하는 방식.",
+    oracle_intro:"UP & DOWN은 <strong>Pyth Network</strong>를 주요 데이터 소스로 활용하여 정확성과 속도를 우선시합니다.",
+    oracle_th1:"체인", oracle_th2:"마켓", oracle_th3:"용도", oracle_th4:"오라클",
+    oracle_td3:"잠금 가격과 종가 설정 (약 20초마다 업데이트)",
+    oracle_why_t:"왜 Pyth Network인가?",
+    oracle_why_b:"기존 오라클과 달리, Pyth는 1차 금융 데이터 소스로부터 직접 서브초 지연 시간과 기관급 데이터를 제공합니다. 이를 통해 정산에 사용되는 가격이 투명하고, 조작에 강하며, 라운드 종료 순간의 CHZ 실제 글로벌 시장 가치를 정확히 반영합니다.",
+    contracts_t:"컨트랙트 주소", contracts_sub:"Cloverse의 온체인 컨트랙트 참조.", tbd:"추후 공개"
+  }
+};
+
+const langNames = { en:'English', zh:'中文', es:'Español', hi:'हिन्दी', ar:'العربية', pt:'Português', ru:'Русский', ja:'日本語', fr:'Français', ko:'한국어' };
+const rtlLangs = ['ar'];
+
+// Section nav
+const items = document.querySelectorAll('.sidebar-item');
+const sections = document.querySelectorAll('.section');
+items.forEach(item => {
+  item.addEventListener('click', () => {
+    items.forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    const target = item.getAttribute('data-section');
+    sections.forEach(s => s.classList.toggle('active', s.id === target));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Lang switcher
+const langBtn = document.getElementById('langBtn');
+const langMenu = document.getElementById('langMenu');
+const langOptions = document.querySelectorAll('.lang-option');
+const currentLangSpan = document.getElementById('currentLang');
+
+langBtn.addEventListener('click', (e) => { e.stopPropagation(); langMenu.classList.toggle('show'); });
+document.addEventListener('click', () => langMenu.classList.remove('show'));
+
+langOptions.forEach(opt => {
+  opt.addEventListener('click', () => {
+    const lang = opt.getAttribute('data-lang');
+    langOptions.forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+    currentLangSpan.textContent = langNames[lang];
+    langMenu.classList.remove('show');
+    document.documentElement.lang = lang;
+    document.body.classList.toggle('rtl', rtlLangs.includes(lang));
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[lang] && t[lang][key]) el.innerHTML = t[lang][key];
+    });
+  });
+});
+</script>
+</body>
+</html>
